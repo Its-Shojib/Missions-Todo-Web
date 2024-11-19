@@ -13,6 +13,9 @@ Route::post('/signup', [UserController::class, 'signup']);
 Route::middleware(['auth:sanctum'])->group(function () {
     //load all user
     Route::get('/users', [UserController::class, 'loadAllUsers']);
+    //load single user by id
+    Route::get('/user/{id}', [UserController::class, 'loadSingleUser']);
+
 });
 
 

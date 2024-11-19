@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     //signup User
-    public function signup(Request $request){
+    function signup(Request $request){
         // Validate the request
         $request->validate([
             'name' =>'required|string|max:255',
@@ -36,7 +36,7 @@ class UserController extends Controller
     }
 
     //login User
-    public function login(Request $request){
+    function login(Request $request){
         //check email
         $user = User::where('email', $request->email)->first();
 
@@ -60,10 +60,22 @@ class UserController extends Controller
     }
 
     //load all user
-    public function loadAllUsers(){
+    function loadAllUsers(){
         $users = User::all();
         return response()->json([
             'users' => $users
         ], 200);
+    }
+    //loadSingleUser
+    function loadSingleUser($id){
+        $user = User::find($id);
+        if($user){
+            return response()->json([
+                'user' => $user
+            ], 200);
+        }
+        return response()->json([
+           'message' => 'User not found'
+        ], 404);
     }
 }
