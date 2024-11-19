@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -13,7 +14,7 @@ class UserController extends Controller
         $request->validate([
             'name' =>'required|string|max:255',
             'email' =>'required|string|email|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:6',
         ]);
 
         // Create a new user
@@ -23,37 +24,46 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        // Return a success response
+        //create token
+        $token = $user->createToken('authToken')->plainTextToken;
+
+        // Return a success response with the token
         return response()->json([
            'message' => 'User created successfully',
-            'user' => $user
+            'user' => $user,
+            'token' => $token
         ], 201);
     }
 
-
     //login User
     public function login(Request $request){
-        // Validate the request
-        $request->validate([
-            'email' =>'required|string|email',
-            'password' => 'required|string',
-        ]);
+        //check email
+        $user = User::where('email', $request->email)->first();
 
-        // Attempt to authenticate the user
-        if(auth()->attempt(['email' => $request->email, 'password' => $request->password])){
-            // Generate a token for the user
-            $token = auth()->user()->createToken('authToken')->plainTextToken;
+        //if user exists and password matches
+        if($user && Hash::check($request->password, $user->password)){
+            //create token
+            $token = $user->createToken('authToken')->plainTextToken;
 
-            // Return a success response with the token
+            //return success response with token
             return response()->json([
-               'message' => 'User authenticated successfully',
+               'message' => 'User logged in successfully',
+                'user' => $user,
                 'token' => $token
             ], 200);
-        } else {
-            // Return an error response if the authentication fails
-            return response()->json([
-               'message' => 'Invalid credentials'
-            ], 401);
         }
+
+        //if user not found or password does not match
+        return response()->json([
+           'message' => 'Invalid email or password'
+        ], 401); 
+    }
+
+    //load all user
+    public function loadAllUsers(){
+        $users = User::all();
+        return response()->json([
+            'users' => $users
+        ], 200);
     }
 }
