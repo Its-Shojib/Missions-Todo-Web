@@ -46,7 +46,6 @@ const SignUp = () => {
             }
         } catch (error) {
             if (error.response?.status === 422) {
-                // Handle validation errors from Laravel
                 const validationErrors = error.response.data.errors;
                 console.error("Validation Errors:", validationErrors);
     

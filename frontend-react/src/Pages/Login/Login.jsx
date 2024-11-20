@@ -9,8 +9,6 @@ import useAuth from '../../Hooks/useAuth';
 import useAxiosPublic from '../../Hooks/useAxiosPublic';
 
 
-
-
 const Login = () => {
     let [showPassword, setShowPassword] = useState(false);
     let { setLoading, setUser } = useAuth();
