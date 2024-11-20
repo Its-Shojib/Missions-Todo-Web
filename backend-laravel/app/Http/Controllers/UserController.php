@@ -50,6 +50,7 @@ class UserController extends Controller
 
             //return success response with token
             return response()->json([
+                "result" => true,
                 'message' => 'User logged in successfully',
                 'user' => $user,
                 'token' => $token
