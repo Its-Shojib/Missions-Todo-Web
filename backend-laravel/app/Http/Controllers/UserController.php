@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     //signup User
-    function signup(Request $request){
+    function signup(Request $request)
+    {
         // Validate the request
         $request->validate([
-            'name' =>'required|string|max:255',
-            'email' =>'required|string|email|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);;
 
         // Create a new user
         $user = User::create([
@@ -29,25 +30,27 @@ class UserController extends Controller
 
         // Return a success response with the token
         return response()->json([
-           'message' => 'User created successfully',
+            "result" => true,
+            'message' => 'User created successfully',
             'user' => $user,
             'token' => $token
         ], 201);
     }
 
     //login User
-    function login(Request $request){
+    function login(Request $request)
+    {
         //check email
         $user = User::where('email', $request->email)->first();
 
         //if user exists and password matches
-        if($user && Hash::check($request->password, $user->password)){
+        if ($user && Hash::check($request->password, $user->password)) {
             //create token
             $token = $user->createToken('authToken')->plainTextToken;
 
             //return success response with token
             return response()->json([
-               'message' => 'User logged in successfully',
+                'message' => 'User logged in successfully',
                 'user' => $user,
                 'token' => $token
             ], 200);
@@ -55,27 +58,29 @@ class UserController extends Controller
 
         //if user not found or password does not match
         return response()->json([
-           'message' => 'Invalid email or password'
-        ], 401); 
+            'message' => 'Invalid email or password'
+        ], 401);
     }
 
     //load all user
-    function loadAllUsers(){
+    function loadAllUsers()
+    {
         $users = User::all();
         return response()->json([
             'users' => $users
         ], 200);
     }
     //loadSingleUser
-    function loadSingleUser($id){
+    function loadSingleUser($id)
+    {
         $user = User::find($id);
-        if($user){
+        if ($user) {
             return response()->json([
                 'user' => $user
             ], 200);
         }
         return response()->json([
-           'message' => 'User not found'
+            'message' => 'User not found'
         ], 404);
     }
 }
