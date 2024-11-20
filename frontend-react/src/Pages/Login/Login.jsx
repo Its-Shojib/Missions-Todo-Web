@@ -29,6 +29,7 @@ const Login = () => {
             if(res.data?.result){
                 setUser(res.data?.user);
                 localStorage.setItem("user", JSON.stringify(res.data?.user));
+                localStorage.setItem("access-token", JSON.stringify(res.data?.token));
                 Swal.fire({
                     position: "center",
                     icon: "success",

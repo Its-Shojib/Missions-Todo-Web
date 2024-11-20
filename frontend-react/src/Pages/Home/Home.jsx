@@ -1,9 +1,10 @@
+import CreateTask from "../../Components/CreateTask";
 
 
 const Home = () => {
     return (
         <div>
-            <p>Hi! I am Home </p>
+            <CreateTask />
         </div>
     );
 };

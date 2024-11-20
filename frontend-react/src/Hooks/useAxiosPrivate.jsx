@@ -1,35 +1,40 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import useAuth from "./useAuth";
+import useLogout from "./useLogout";
 
-
-let axiosSecure = axios.create({
-    baseURL: 'http://127.0.0.1:8000',
-    withCredentials: true
-})
+const axiosPrivate = axios.create({
+    baseURL: "http://127.0.0.1:8000",
+    withCredentials: true, 
+});
 
 const useAxiosPrivate = () => {
-    let navigate = useNavigate();
-    let { Logout } = useAuth();
-    axiosSecure.interceptors.request.use(function (config) {
-        let token = localStorage.getItem('access-token');
-        config.headers.authorization = `Bearer ${token}`
-        return config;
-    }, function (error) {
-        return Promise.reject(error);
-    });
+    const navigate = useNavigate();
+    const { logout } = useLogout();
 
-    axiosSecure.interceptors.response.use((response) => {
-        return response;
-    }, async (error) => {
-        let status = error?.response?.status;
-        if (status === 401 || status === 403) {
-            await Logout();
-            navigate('/login');
+    axiosPrivate.interceptors.request.use(
+        (config) => {
+            const token = localStorage.getItem("access-token");
+            config.headers.authorization = `Bearer ${token}`;
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
         }
-        return Promise.reject(error);
-    })
+    );
 
-    return axiosSecure;
-}
+    axiosPrivate.interceptors.response.use(
+        (response) => response,
+        async (error) => {
+            const status = error?.response?.status;
+            if (status === 401 || status === 403) {
+                await logout(); // Use the corrected `logout` function
+                navigate("/login");
+            }
+            return Promise.reject(error);
+        }
+    );
+
+    return axiosPrivate;
+};
+
 export default useAxiosPrivate;
