@@ -10,6 +10,7 @@ use App\Http\Controllers\TaskController;
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/signup', [UserController::class, 'signup']);
 Route::post('/add-task', [TaskController::class, 'addTask']);
+Route::get('/load-task/{email}', [TaskController::class, 'loadTasksByEmail']);
 
 //auth sanctum middlleware apply
 Route::middleware(['auth:sanctum'])->group(function () {

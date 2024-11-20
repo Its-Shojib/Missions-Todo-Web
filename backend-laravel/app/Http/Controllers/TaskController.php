@@ -30,4 +30,26 @@ class TaskController extends Controller
         ], 201);
 
     }
+
+
+    //load task based on email
+    function loadTasksByEmail($email){
+        // Fetch tasks by email
+        $tasks = Tasks::where('email', $email)->get();
+
+        // Check if tasks exist
+        if($tasks->count() > 0){
+            return response()->json([
+                'tasks' => $tasks,
+                "result" => true,
+            ], 200);
+        }
+
+        return response()->json([
+           'message' => 'No tasks found for this email.',
+            "result" => false,
+        ], 404);
+    }
 }
+
+
