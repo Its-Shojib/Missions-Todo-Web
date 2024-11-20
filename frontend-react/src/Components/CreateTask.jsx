@@ -1,13 +1,13 @@
 import { FiPlus } from "react-icons/fi";
-// import useAxiosPublic from "../Hooks/useAxiosPublic";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
 import useAuth from "../Hooks/useAuth";
-import useAxiosPrivate from "../Hooks/useAxiosPrivate";
+// import useAxiosPrivate from "../Hooks/useAxiosPrivate";
 
 
 const CreateTask = () => {
 
-    // let axiosPublic = useAxiosPublic();
-    let axiosPrivate = useAxiosPrivate();
+    let axiosPublic = useAxiosPublic();
+    // let axiosPrivate = useAxiosPrivate();
     let { user } = useAuth()
     console.log(user?.email)
 
@@ -20,7 +20,7 @@ const CreateTask = () => {
             email: user?.email,
             completed: false,
         }
-        const res = await axiosPrivate.post('/api/add-task', task);
+        const res = await axiosPublic.post('/api/add-task', task);
         if (res.status === 201) {
             // Reset form
             e.target.reset();
