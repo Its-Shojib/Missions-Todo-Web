@@ -32,8 +32,8 @@ const Login = () => {
             email
         }
         setLoading(true);
-        let res = await axiosPublic.post('/auth/login', loginInfo);
-            if(res.data?.success){
+        let res = await axiosPublic.post('/api/login', loginInfo);
+            if(res.data?.result){
                 setUser(user);
                 localStorage.setItem("user", JSON.stringify(user));
                 Swal.fire({
