@@ -8,13 +8,16 @@ use App\Models\Tasks;
 class TaskController extends Controller
 {
     //add task
-    function addTask(Request $request){
+    function addTask(Request $request)
+    {
         // Validate the request
         $request->validate([
-            'title' =>'required|string|max:255',
-            'email' =>'required|string',
+            'title' => 'required|string|max:50',
+            'email' => 'required|email',
             'completed' => 'required',
         ]);
+
+        
 
         // Create a new task
         $task = new Tasks();
@@ -22,23 +25,23 @@ class TaskController extends Controller
         $task->email = $request->email;
         $task->completed = $request->completed;
         $task->save();
-
+        
         return response()->json([
             'message' => 'Task created successfully.',
             'task' => $task,
             "result" => true,
         ], 201);
-
     }
 
 
     //load task based on email
-    function loadTasksByEmail($email){
+    function loadTasksByEmail($email)
+    {
         // Fetch tasks by email
         $tasks = Tasks::where('email', $email)->get();
 
         // Check if tasks exist
-        if($tasks->count() > 0){
+        if ($tasks->count() > 0) {
             return response()->json([
                 'tasks' => $tasks,
                 "result" => true,
@@ -46,18 +49,19 @@ class TaskController extends Controller
         }
 
         return response()->json([
-           'message' => 'No tasks found for this email.',
+            'message' => 'No tasks found for this email.',
             "result" => false,
         ], 200);
     }
 
     //update task completed or incompleted
-    function updateTask($id){
+    function updateTask($id)
+    {
         // Fetch the task
         $task = Tasks::find($id);
 
         // Check if task exists
-        if($task){
+        if ($task) {
             $task->completed = !$task->completed;
             $task->save();
 
@@ -69,18 +73,19 @@ class TaskController extends Controller
         }
 
         return response()->json([
-           'message' => 'Task not found.',
+            'message' => 'Task not found.',
             "result" => false,
         ], 404);
     }
 
     //Delete the task
-    function deleteTask($id){
+    function deleteTask($id)
+    {
         // Fetch the task
         $task = Tasks::find($id);
 
         // Check if task exists
-        if($task){
+        if ($task) {
             $task->delete();
 
             return response()->json([
@@ -90,10 +95,8 @@ class TaskController extends Controller
         }
 
         return response()->json([
-           'message' => 'Task not found.',
+            'message' => 'Task not found.',
             "result" => false,
         ], 404);
     }
 }
-
-
