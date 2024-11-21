@@ -4,7 +4,7 @@ import UseLoadMyTasks from "../../Hooks/useLoadMyTasks";
 
 const Home = () => {
     let [myTask, isPending] = UseLoadMyTasks();
-    console.log(myTask)
+    // console.log(myTask)
 
     return (
         <div className="bg-green-200 min-h-screen">

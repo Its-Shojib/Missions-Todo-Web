@@ -9,7 +9,7 @@ const UseLoadMyTasks = () => {
         queryKey: ['my-task'],
         queryFn: async () => {
             const res = await axiosPublic.get(`/api/load-task/${user?.email}`);
-            console.log(res.data.tasks);
+            // console.log(res.data.tasks);
             return res.data.tasks;
         }
     });

@@ -1,15 +1,17 @@
 import { FiPlus } from "react-icons/fi";
-import useAxiosPublic from "../Hooks/useAxiosPublic";
+// import useAxiosPublic from "../Hooks/useAxiosPublic";
 import useAuth from "../Hooks/useAuth";
-// import useAxiosPrivate from "../Hooks/useAxiosPrivate";
+import useAxiosPrivate from "../Hooks/useAxiosPrivate";
+import UseLoadMyTasks from "../Hooks/useLoadMyTasks";
+
 
 
 const CreateTask = () => {
 
-    let axiosPublic = useAxiosPublic();
-    // let axiosPrivate = useAxiosPrivate();
+    // let axiosPublic = useAxiosPublic();
+    let axiosPrivate = useAxiosPrivate();
     let { user } = useAuth()
-    console.log(user?.email)
+    let [,,refetch] = UseLoadMyTasks();
 
     // Add form handling logic here
     const handleAddTask = async (e) => {
@@ -20,12 +22,13 @@ const CreateTask = () => {
             email: user?.email,
             completed: false,
         }
-        const res = await axiosPublic.post('/api/add-task', task);
+        const res = await axiosPrivate.post('/api/add-task', task);
         if (res.status === 201) {
             // Reset form
             e.target.reset();
+            refetch(); // Fetch updated tasks after adding a new one.
         }
-        console.log(res.data)
+        // console.log(res.data)
 
     }
     return (
