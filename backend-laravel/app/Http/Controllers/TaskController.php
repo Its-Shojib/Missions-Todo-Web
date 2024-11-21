@@ -48,6 +48,50 @@ class TaskController extends Controller
         return response()->json([
            'message' => 'No tasks found for this email.',
             "result" => false,
+        ], 200);
+    }
+
+    //update task completed or incompleted
+    function updateTask($id){
+        // Fetch the task
+        $task = Tasks::find($id);
+
+        // Check if task exists
+        if($task){
+            $task->completed = !$task->completed;
+            $task->save();
+
+            return response()->json([
+                'message' => 'Task updated successfully.',
+                'task' => $task,
+                "result" => true,
+            ], 200);
+        }
+
+        return response()->json([
+           'message' => 'Task not found.',
+            "result" => false,
+        ], 404);
+    }
+
+    //Delete the task
+    function deleteTask($id){
+        // Fetch the task
+        $task = Tasks::find($id);
+
+        // Check if task exists
+        if($task){
+            $task->delete();
+
+            return response()->json([
+                'message' => 'Task deleted successfully.',
+                "result" => true,
+            ], 200);
+        }
+
+        return response()->json([
+           'message' => 'Task not found.',
+            "result" => false,
         ], 404);
     }
 }

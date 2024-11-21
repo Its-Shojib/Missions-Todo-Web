@@ -21,6 +21,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     //load single user by id
     Route::get('/user/{id}', [UserController::class, 'loadSingleUser']);
     Route::post('/add-task', [TaskController::class, 'addTask']);
+    //Update The task
+    Route::put('/task/{id}', [TaskController::class, 'updateTask']);
+    //Delete The task
+    Route::delete('/task/{id}', [TaskController::class, 'deleteTask']);
 
 });
 

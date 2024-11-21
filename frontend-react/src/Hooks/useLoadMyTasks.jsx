@@ -5,12 +5,12 @@ import useAuth from "./useAuth";
 const UseLoadMyTasks = () => {
     let axiosPublic = useAxiosPublic();
     let { user } = useAuth();
-    const { data: myTask, isPending, refetch } = useQuery({
+    const { data: myTask = [], isPending, refetch } = useQuery({
         queryKey: ['my-task'],
         queryFn: async () => {
             const res = await axiosPublic.get(`/api/load-task/${user?.email}`);
             // console.log(res.data.tasks);
-            return res.data.tasks;
+            return res.data.tasks || [];
         }
     });
     return [myTask, isPending, refetch];
