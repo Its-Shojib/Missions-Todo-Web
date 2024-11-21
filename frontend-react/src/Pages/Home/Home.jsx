@@ -4,6 +4,9 @@ import UseLoadMyTasks from "../../Hooks/useLoadMyTasks";
 import useAxiosPrivate from "../../Hooks/useAxiosPrivate";
 import { FiTrash2 } from "react-icons/fi";
 import { useState } from "react";
+import Logout from "../../Components/Logout";
+import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const Home = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -35,21 +38,45 @@ const Home = () => {
     };
 
     // Delete a task
-    const deleteTask = async (taskId) => {
-        try {
-            const res = await axiosPrivate.delete(`/api/task/${taskId}`);
-            if (res.status === 200) {
-                console.log(res);
-                refetch();
+    const deleteTask = (taskId) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+
+                    const res = await axiosPrivate.delete(`/api/task/${taskId}`);
+                    if (res.status === 200) {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: `${res.data.message}`,
+                            icon: "success"
+                        });
+                        refetch();
+                    }
+                } catch (err) {
+                    console.error("Error deleting task:", err);
+                }
+
             }
-        } catch (err) {
-            console.error("Error deleting task:", err);
-        }
+        });
+
     };
 
     return (
         <div className="bg-green-100 min-h-screen">
+            <Helmet>
+                <title>Mission | Home</title>
+            </Helmet>
+            
             <CreateTask />
+            <Logout></Logout>
 
             <div className="flex flex-col md:flex-row gap-4 items-center justify-center mb-6 max-w-screen-sm mx-auto mt-10">
                 <input

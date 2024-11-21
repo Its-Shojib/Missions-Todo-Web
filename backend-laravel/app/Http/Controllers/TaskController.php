@@ -4,34 +4,57 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tasks;
+use Illuminate\Validation\ValidationException;
 
 class TaskController extends Controller
 {
     //add task
     function addTask(Request $request)
-    {
+{
+    try {
         // Validate the request
-        $request->validate([
+        $validatedData = $request->validate([
             'title' => 'required|string|max:50',
             'email' => 'required|email',
-            'completed' => 'required',
+            'completed' => 'required|boolean',
         ]);
-
-        
 
         // Create a new task
         $task = new Tasks();
-        $task->title = $request->title;
-        $task->email = $request->email;
-        $task->completed = $request->completed;
-        $task->save();
-        
+        $task->title = $validatedData['title'];
+        $task->email = $validatedData['email'];
+        $task->completed = $validatedData['completed'];
+
+        if ($task->save()) {
+            return response()->json([
+                'message' => 'Task created successfully.',
+                'task' => $task,
+                "result" => true,
+            ], 201);
+        } else {
+            // If the save operation fails
+            return response()->json([
+                'message' => 'Failed to save task.',
+                "result" => false,
+            ], 500);
+        }
+    } catch (ValidationException $e) {
+        // Handle validation errors
         return response()->json([
-            'message' => 'Task created successfully.',
-            'task' => $task,
-            "result" => true,
-        ], 201);
+            'message' => 'Validation failed.',
+            'errors' => $e->errors(),
+            "result" => false,
+        ], 200);
+    } catch (\Exception $e) {
+        // Handle other unexpected errors
+        return response()->json([
+            'message' => 'An unexpected error occurred.',
+            'error' => $e->getMessage(),
+            "result" => false,
+        ], 500);
     }
+}
+
 
 
     //load task based on email

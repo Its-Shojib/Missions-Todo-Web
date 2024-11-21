@@ -68,7 +68,7 @@ const SignUp = () => {
 
 
     return (
-        <div className="flex flex-col md:flex-row gap-5 px-2 justify-center items-center mt-20">
+        <div className="flex px-2 justify-center items-center min-h-screen">
             <Helmet>
                 <title>Mission | Signup</title>
             </Helmet>

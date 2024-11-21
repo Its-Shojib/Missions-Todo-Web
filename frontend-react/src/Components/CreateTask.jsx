@@ -3,6 +3,7 @@ import { FiPlus } from "react-icons/fi";
 import useAuth from "../Hooks/useAuth";
 import useAxiosPrivate from "../Hooks/useAxiosPrivate";
 import UseLoadMyTasks from "../Hooks/useLoadMyTasks";
+import Swal from "sweetalert2";
 
 
 
@@ -23,10 +24,19 @@ const CreateTask = () => {
             completed: false,
         }
         const res = await axiosPrivate.post('/api/add-task', task);
-        if (res.status === 201) {
+        if (res.data.result) {
             // Reset form
             e.target.reset();
             refetch(); // Fetch updated tasks after adding a new one.
+        }else{
+            console.error("Failed to add task:", res.data)
+            Swal.fire({
+                icon: 'error',
+                title: `${res.data.errors.title}`,
+                text: 'Please try again.',
+            });
+            e.target.reset();
+
         }
         // console.log(res.data)
 
