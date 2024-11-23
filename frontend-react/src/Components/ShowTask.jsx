@@ -1,7 +1,7 @@
 import { FiTrash2 } from "react-icons/fi";
 
 
-const ShowTask = ({isPending, filteredTasks}) => {
+const ShowTask = ({ isPending, filteredTasks, toggleCompletion, deleteTask }) => {
     return (
         <div>
             {

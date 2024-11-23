@@ -30,7 +30,6 @@ const Home = () => {
         try {
             const res = await axiosPrivate.put(`/api/task/${taskId}`);
             if (res.status === 200) {
-                console.log(res);
                 refetch();
             }
         } catch (err) {
