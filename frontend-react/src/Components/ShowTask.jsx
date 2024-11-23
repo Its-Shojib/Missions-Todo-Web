@@ -8,7 +8,6 @@ const ShowTask = ({ isPending, filteredTasks, toggleCompletion, deleteTask }) =>
                 isPending && <div className="min-h-[calc(100vh-300px)] flex justify-center items-center">
                     <span className="loading loading-spinner loading-lg"></span>
                 </div>
-
             }
             <div className="my-10 max-w-[600px] mx-auto">
                 {!isPending && filteredTasks?.length == 0 && (
