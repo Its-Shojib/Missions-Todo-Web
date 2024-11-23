@@ -37,7 +37,6 @@ const Home = () => {
         }
     };
 
-    // Delete a task
     const deleteTask = (taskId) => {
         Swal.fire({
             title: "Are you sure?",
