@@ -9,7 +9,7 @@ const Logout = () => {
     const { user } = useAuth();
 
     return (
-        <div className='flex top-[50%] fixed max-w-screen-2xl'>
+        <div className='flex top-[50%] fixed max-w-screen-2xl z-50'>
             <ul>
                 {
                     user ? <li onClick={() => logout()} className={'flex justify-between items-center w-28 h-12 px-2 ml-[-80px] pl-4 hover:ml-[-10px] hover:rounded-md duration-300 bg-rose-900 rounded-r-full text-right cursor-pointer'}>
