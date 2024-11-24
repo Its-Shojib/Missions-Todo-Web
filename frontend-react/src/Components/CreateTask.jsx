@@ -42,7 +42,7 @@ const CreateTask = () => {
 
     }
     return (
-        <div className="bg-green-800 text-white py-10">
+        <div className="bg-green-800 text-white py-10 px-2">
             <form onSubmit={handleAddTask}>
                 <div className="flex gap-2 max-w-[600px] mx-auto">
                     <input className="border border-gray-300 w-full py-3 px-2 rounded-md text-gray-700 outline-none " type="text" id="task" name="task"

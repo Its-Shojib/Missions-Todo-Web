@@ -69,7 +69,7 @@ const Home = () => {
     };
 
     return (
-        <div className="bg-green-100 min-h-screen">
+        <div className="bg-green-100 min-h-screen px-2">
             <Helmet>
                 <title>Mission | Home</title>
             </Helmet>

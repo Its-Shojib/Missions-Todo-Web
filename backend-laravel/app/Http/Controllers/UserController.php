@@ -43,6 +43,7 @@ class UserController extends Controller
         //check email
         $user = User::where('email', $request->email)->first();
 
+
         //if user exists and password matches
         if ($user && Hash::check($request->password, $user->password)) {
             //create token
@@ -60,7 +61,7 @@ class UserController extends Controller
         //if user not found or password does not match
         return response()->json([
             'message' => 'Invalid email or password'
-        ], 401);
+        ],200);
     }
 
     //load all user
